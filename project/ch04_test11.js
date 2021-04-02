@@ -4,7 +4,7 @@ var infile = fs.createReadStream('./output.txt', {flags: 'r'});
 var outfile = fs.createWriteStream('./output2.txt', {flags: 'w'});
 
 infile.on('data', function(data) {
-    console.log('읽어들인 데이터', data);
+    console.log('3114 이연지 - 읽어들인 데이터', data);
     outfile.write(data);
     console.log('첫번째 버퍼의 문자열: %s', data.toString());
 });

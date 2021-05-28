@@ -89,14 +89,7 @@ router.route('/process/login').post(function(req, res) {
 			authorized: true
 		};
 		
-		res.writeHead('200', {'Content-Type':'text/html;charset=utf8'});
-		res.write('<h1>로그인 성공</h1>');
-		res.write('<div><p>Param id : ' + paramId + '</p></div>');
-		res.write('<div><p>Param password : ' + paramPassword + '</p></div>');
-		res.write("<br><br><button type = button><a href='/process/product'>상품 페이지로 이동하기</a></button");    //'/process/product'>상품=>109라인의   //router.route('/process/product').get으로 연결됨
-		// 추가4
-		res.write("<br><br><button type = button><a href='/photomulti_link.html'>파일업로드로 이동하기</a></button");    //'/process/product'>상품=>109라인의 				              //router.route('/process/product').get으로 연결됨
-		res.end();
+		res.redirect('/login_success.html');
 	}
 });
 

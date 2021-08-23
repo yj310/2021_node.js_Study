@@ -10,12 +10,11 @@ Schema.createSchema = function(mongoose) {
 	
 	// 스키마 정의
 	var UserSchema = mongoose.Schema({
-	    id: {type: String, required: true, unique: true, 'default':''},
-	    hashed_password: {type: String, required: true, 'default':''},
-	    salt: {type:String, required:true},
+	    email: {type: String, 'default':''},
+		hashed_password: {type: String, required: true, 'default':''},
 	    name: {type: String, index: 'hashed', 'default':''},
-	    age: {type: Number, 'default': -1},
-	    created_at: {type: Date, index: {unique: false}, 'default': Date.now},
+	    salt: {type:String, required:true},
+		created_at: {type: Date, index: {unique: false}, 'default': Date.now},
 	    updated_at: {type: Date, index: {unique: false}, 'default': Date.now}
 	});
 	
@@ -73,9 +72,9 @@ Schema.createSchema = function(mongoose) {
 	})
 	
 	// 필수 속성에 대한 유효성 확인 (길이값 체크)
-	UserSchema.path('id').validate(function (id) {
+	UserSchema.path('email').validate(function (email) {
 		return id.length;
-	}, 'id 칼럼의 값이 없습니다.');
+	}, 'email 칼럼의 값이 없습니다.');
 	
 	UserSchema.path('name').validate(function (name) {
 		return name.length;
@@ -87,8 +86,8 @@ Schema.createSchema = function(mongoose) {
 	
 	   
 	// 스키마에 static 메소드 추가
-	UserSchema.static('findById', function(id, callback) {
-		return this.find({id:id}, callback);
+	UserSchema.static('findByEmail', function(email, callback) {
+		return this.find({email:email}, callback);
 	});
 	
 	UserSchema.static('findAll', function(callback) {

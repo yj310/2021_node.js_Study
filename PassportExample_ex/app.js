@@ -15,6 +15,9 @@ var expressErrorHandler = require('express-error-handler');
 // Session 미들웨어 불러오기
 var expressSession = require('express-session');
   
+//=====Passport 사용=====//
+var passport = require('passport');
+var flash = require('connect-flash');
 
 // 모듈로 분리한 설정 파일 불러오기
 var config = require('./config');
@@ -58,6 +61,48 @@ app.use(expressSession({
 	saveUninitialized:true
 }));
 
+//=====Passport 사용 설정=====//
+// Passport의 세션을 사용할때는 그 전에 Express의 세션을 사용하는 코드가 있어야함
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(flash());
+
+//=====Passport Strategy 설정=====//
+var LocalStrategy = require('passport-local').Strategy;
+
+// 패스포트 로그인 설정
+passport.use('local-login', new LocalStrategy({ // a
+	usernameField: 'email', 
+	passwordField: 'password',
+	passReqToCallback: true	// 이 옵션을 설정하면 아래 콜백 함수의 첫번째 파라미터로 req 객체 전달됨
+}, function(req, email, password, done) {
+	console.log('passport의 local-login 호출됨: ' + email + ', ' + password);
+	
+	var database = app.get('database');
+	database.UserModel.findOne({'email': email}, function(err, user) { //b
+		if(err) { return done(err); }
+
+		// 등록된 사용자가 없는 경우
+		if(!user) {
+			console.log('계정이 일치하지 않음');
+			return done(null, false, req.flash('loginMessage', '등록된 계정이 없습니다.'));
+			// 검증 콜백에서 두번째 파라미터의 값을 false로 하여 인증 실패한 것으로 처리
+		}
+
+		// 비밀번호 비교하여 맞지 않는 경우
+		var authenticate = user.authenticate(password, user._doc.salt, user._doc.hashed_password);
+		if(!authenticate) {
+			console.log('비밀번호 일치하지 않음.');
+			return done(null, false, req.flash('loginMessage', '비밀번호가 일치하지 않습니다.'));
+			// 검증 콜백에서 두번쨰 파라미터의 값을 false로 하여 인증 실패한 것으로 처리
+		}
+		
+		// 정상인 경우
+		console.log('계정과 비밀번호가 일치함.');
+		return done(null, user);
+		// 검증 콜백에서 두번째 파라미터의 값을 user 객체로 넣어 인증 성공한 것으로 처리
+	}); // b
+})); // a
  
 //라우팅 정보를 읽어들여 라우팅 설정
 route_loader.init(app, express.Router());

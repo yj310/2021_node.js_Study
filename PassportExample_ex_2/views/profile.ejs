@@ -20,25 +20,29 @@
 	</head>
 	<body>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+		<div class="container"> 
+			<div class="page-header text-center">
+			<h1><span class="fa fa-book" style='font-size:48px;color:blue'></span> 사용자 프로필</h1><br>
+			<a href="/logout"><button type="button" class="btn btn-outline-primary">로그아웃</button></a>
+			<a href="/"><button type="button" class="btn btn-outline-primary">홈</button></a>
+			</div>
+			<br>
+			<div class="jumbotron" style= padding:25px;><!-- <div style="margin-top:20px;text-align:center;" > -->
+			<div class="row">
+			<div class="col-sm-6">
+			<h3><span class="fa fa-user"></span> 로컬 프로필 정보</h3>
+			<br>
+			<p>
+			<strong>이메일</strong>: <%= user.email %>
+			<br><br>
+			<strong>별명</strong>: <%= user.name %>
+			</p>
+			<br>
+			</div>
+			</div>
+			</div>
+			</div>
+		   
 
 		
 	</body>

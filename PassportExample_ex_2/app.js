@@ -194,7 +194,7 @@ passport.use('local-login', new LocalStrategy({ // a
 
 
 // 패스포트 회원가입 설정
-passport.use('local-signup', new LocalStrategy)({ //a
+passport.use('local-signup', new LocalStrategy({ //a
 	usernameField: 'email',
 	passwordField: 'password',
 	passReqToCallback: true		// 이 옵션을 설정하면 아래 콜백 함수의 첫번째 파라미터로 req 객체 전달됨	
@@ -231,7 +231,7 @@ passport.use('local-signup', new LocalStrategy)({ //a
 			}	// d
 		});	// c
 	});	// b
-});	// a
+}));	// a
 
 
 
